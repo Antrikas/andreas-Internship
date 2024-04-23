@@ -106,28 +106,35 @@ const HotCollections = () => {
           {loading ? ( <Slider {...settings}>
 
             {new Array(4).fill(0).map((_, index) => (
-            <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={index}>
-              <div className="nft_coll">
-                <div className="nft_wrap">
-                  <Link to="/item-details">
-                    <Skeleton width={100} height={200}></Skeleton>
-                  </Link>
-                </div>
-                <div className="nft_coll_pp">
-                  <Link to="/author">
-                  <Skeleton width={50} height={50} borderRadius={50}> </Skeleton>
-                  </Link>
-                  <i className="fa fa-check"></i>
-                </div>
-                <div className="nft_coll_info flex flex-col">
-                  <Link to="/explore">
-                  <Skeleton width={100} height={20}></Skeleton>
-                  </Link>
-                  <Skeleton width={60} height={20}></Skeleton>
+              <div
+                className="col-lg-12 col-md-12 col-sm-10 col-xs-12"
+                key={index}
+              >
+                <div className="nft_coll">
+                  <div className="nft_wrap">
+                    <Link to="/item-details">
+                      <Skeleton width={'100%'} height={200}></Skeleton>
+                    </Link>
+                  </div>
+                  <div className="nft_coll_pp">
+                    <Link to="/author">
+                      <Skeleton width={50} height={50} borderRadius={50}></Skeleton>
+                    </Link>
+                    <i className="fa fa-check"></i>
+                  </div>
+                  <div className="nft_coll_info" style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Link to="/explore">
+                      <Skeleton width={100} height={20}></Skeleton>
+                    </Link>
+                    <span>
+                      <Skeleton width={60} height={20}></Skeleton>
+
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+
+            ))}
 
 
           </Slider>) : (  <Slider {...settings}>
