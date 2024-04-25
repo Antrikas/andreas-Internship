@@ -104,7 +104,7 @@ const NewItems = () => {
             <Slider {...settings}>
               {loading ? (
                 [...Array(4)].map((_, index) => (
-                  <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={index}>
+                  <div className="col-lg-12 col-md-12 col-sm-10 col-xs-12" key={index}>
                    
 
                    
@@ -112,7 +112,7 @@ const NewItems = () => {
                 ))
               ) : (
                 Object.values(nftObjects).map((object, index) => (
-                  <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={index}>
+                  <div className="col-lg-12 col-md-12 col-sm-10 col-xs-12" key={index}>
                     <div className="nft__item">
                       <div className="author_list_pp">
                         <Link
@@ -125,7 +125,7 @@ const NewItems = () => {
                           <i className="fa fa-check"></i>
                         </Link>
                       </div>
-                      <div className="de_countdown">5h 30m 32s</div>
+                      <div className={object.countdown}>5h 30m 32s</div>
                       <div className="nft__item_wrap">
                         <div className="nft__item_extra">
                           <div className="nft__item_buttons">
@@ -151,7 +151,7 @@ const NewItems = () => {
                           <Link to="/item-details">
                             <h4>{object.title}</h4>
                           </Link>
-                          <div className="nft__item_price">3.08 ETH</div>
+                          <div className={object.price}>3.08 ETH</div>
                           <div className="nft__item_like">
                             <i className="fa fa-heart"></i>
                             <span>ERC-{object.code}</span>
