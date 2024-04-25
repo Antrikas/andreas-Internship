@@ -101,19 +101,36 @@ const NewItems = () => {
                 <div className="small-border bg-color-2"></div>
               </div>
             </div>
+
             <Slider {...settings}>
               {loading ? (
                 [...Array(4)].map((_, index) => (
                   <div className="col-lg-12 col-md-12 col-sm-10 col-xs-12" key={index}>
-                   
-
-                   
+                    <div className="nft__item" ></div>
+                    <Skeleton width={'100%'} height={200}></Skeleton>
+                        <Link
+                          to="/author"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          title="Creator: Monica Lucas"
+                        >
+                          <Skeleton width={50} height={50} borderRadius={50}></Skeleton>
+                          <i className="fa fa-check"></i>
+                        </Link>
+                        <div className="nft__item_info"></div>
+                        <Link to="/item-details">
+                        <Skeleton width={100} height={20}></Skeleton>
+                          </Link>
+                          <Link to="/item-details">
+                          <Skeleton width={60} height={20}></Skeleton>
+                          </Link>
                   </div>
                 ))
+
               ) : (
                 Object.values(nftObjects).map((object, index) => (
                   <div className="col-lg-12 col-md-12 col-sm-10 col-xs-12" key={index}>
-                    <div className="nft__item">
+                    <div className="nft__item" >
                       <div className="author_list_pp">
                         <Link
                           to="/author"
