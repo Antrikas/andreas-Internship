@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import axios from "axios";
 import Skeleton from "../UI/Skeleton";
+import CountdownTimer from 'react-countdown';
 
 
 const NewItems = () => {
@@ -90,7 +91,55 @@ const NewItems = () => {
      FetchApi()
     },[])
 
+    function calculateRemainingTime(countdownTime) {
+      // Update the countdown time every second
+      setInterval(() => {
+        countdownTime -= 1000;
+    
+        const now = new Date().getTime();
+        const distance = countdownTime - now;
+    
+        const hours = Math.floor(distance / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+        // Log the updated time every second (for demonstration purposes)
+        console.log(`${hours}h ${minutes}m ${seconds}s`);
+      }, 1000);
+    
+      // Return initial time values (these won't be updated by setInterval)
+      const now = new Date().getTime();
+      const distance = countdownTime - now;
+      const hours = Math.floor(distance / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      return { hours, minutes, seconds };
+    }
+    
+    const [countdownTimes, setCountdownTimes] = useState({});
+    useEffect(() => {
+      const initialCountdownTimes = Object.fromEntries(
+        Object.values(nftObjects).map((obj) => [obj.id, obj.expiryDate])
+      );
+      setCountdownTimes(initialCountdownTimes);
+    }, [nftObjects]);
   
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setCountdownTimes((prevCountdownTimes) => {
+          const updatedCountdownTimes = { ...prevCountdownTimes };
+          Object.keys(prevCountdownTimes).forEach((objId) => {
+            if (prevCountdownTimes[objId] > 0) {
+              updatedCountdownTimes[objId] -= 1000;
+            }
+          });
+          return updatedCountdownTimes;
+        });
+      }, 1000);
+  
+      return () => clearInterval(interval);
+    }, []);
+
     return (
       <section id="section-items" className="no-bottom">
         <div className="container">
@@ -129,11 +178,11 @@ const NewItems = () => {
 
               ) : (
                 Object.values(nftObjects).map((object, index) => (
-                  <div className="col-lg-12 col-md-12 col-sm-10 col-xs-12" key={index}>
+                  <div className="col-lg-12 col-md-12 col-sm-10 col-xs-12" key={object.id}>
                     <div className="nft__item" >
                       <div className="author_list_pp">
                         <Link
-                          to="/author"
+                          to={`/author/${object.authorId}`}
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           title="Creator: Monica Lucas"
@@ -142,7 +191,13 @@ const NewItems = () => {
                           <i className="fa fa-check"></i>
                         </Link>
                       </div>
-                      <div className={object.countdown}>5h 30m 32s</div>
+                    
+                     <div> {countdownTimes[object.id] > 0 ? ( <div className="de_countdown"> 
+              {calculateRemainingTime(countdownTimes[object.id]).hours}h {calculateRemainingTime(countdownTimes[object.id]).minutes}m {calculateRemainingTime(countdownTimes[object.id]).seconds}s
+            </div> ) : ( 
+              ''
+            )}</div>
+
                       <div className="nft__item_wrap">
                         <div className="nft__item_extra">
                           <div className="nft__item_buttons">
