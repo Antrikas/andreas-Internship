@@ -217,16 +217,16 @@ const NewItems = () => {
                           </div>
                         </div>
                         <div className="nft__item_info">
-                          <Link to="/item-details">
-                            <img src={object.nftImage} className="lazy nft__item_preview" alt="" />
+                          <Link to={`/item-details/${object.nftId}`} >
+                            <img src={object.nftImage} className="lazy nft__item_preview"  alt="" />
                           </Link>
-                          <Link to="/item-details">
+                          <Link to="/item-details"> 
                             <h4>{object.title}</h4>
                           </Link>
-                          <div className={object.price}>3.08 ETH</div>
-                          <div className="nft__item_like">
+                          <div className="nft__item_price">{object.price}ETH</div>
+                          <div className="nft__item_like"> 
                             <i className="fa fa-heart"></i>
-                            <span>ERC-{object.code}</span>
+                            <span>{object.likes}</span>
                           </div>
                         </div>
                       </div>
