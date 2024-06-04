@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthorImage from "../../images/author_thumbnail.jpg";
 import nftImage from "../../images/nftImage.jpg";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import axios from "axios";
 import Skeleton from "../UI/Skeleton";
-import CountdownTimer from 'react-countdown';
+
 
 
 const NewItems = () => {
@@ -48,7 +47,6 @@ const NewItems = () => {
   };
   
   const [nftObjects, setNftObjects] = useState ({})
-
   const [loading, setLoading] = useState (true)
 
 
@@ -96,15 +94,8 @@ const NewItems = () => {
       setInterval(() => {
         countdownTime -= 1000;
     
-        const now = new Date().getTime();
-        const distance = countdownTime - now;
-    
-        const hours = Math.floor(distance / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
         // Log the updated time every second (for demonstration purposes)
-        console.log(`${hours}h ${minutes}m ${seconds}s`);
+        
       }, 1000);
     
       // Return initial time values (these won't be updated by setInterval)
@@ -175,9 +166,9 @@ const NewItems = () => {
                           </Link>
                   </div>
                 ))
-
               ) : (
                 Object.values(nftObjects).map((object, index) => (
+                  
                   <div className="col-lg-12 col-md-12 col-sm-10 col-xs-12" key={object.id}>
                     <div className="nft__item" >
                       <div className="author_list_pp">
@@ -192,8 +183,11 @@ const NewItems = () => {
                         </Link>
                       </div>
                     
-                     <div> {countdownTimes[object.id] > 0 ? ( <div className="de_countdown"> 
-              {calculateRemainingTime(countdownTimes[object.id]).hours}h {calculateRemainingTime(countdownTimes[object.id]).minutes}m {calculateRemainingTime(countdownTimes[object.id]).seconds}s
+                     <div> {countdownTimes[object.id] > 0 ? ( 
+                     <div className="de_countdown"> 
+              {calculateRemainingTime(countdownTimes[object.id]).hours}h 
+              {calculateRemainingTime(countdownTimes[object.id]).minutes}m 
+              {calculateRemainingTime(countdownTimes[object.id]).seconds}s
             </div> ) : ( 
               ''
             )}</div>
@@ -223,7 +217,7 @@ const NewItems = () => {
                           </Link>
                           </div>
                           <div className="nft__item_info">
-                          <Link to={`/item-details/${object.nftId}`}> 
+                          <Link to={`/item-details/${object.nftId}`}  >
                             <h4>{object.title}</h4>
                           </Link>
                           <div className="nft__item_price">{object.price}ETH</div>
