@@ -46,9 +46,6 @@ const NewItems = () => {
     ]
   };
   
-  const [nftObjects, setNftObjects] = useState ({})
-  const [loading, setLoading] = useState (true)
-
 
   function SampleNextArrow(props) {
     const { className, style, onClick } = props;
@@ -71,6 +68,9 @@ const NewItems = () => {
     );
   }
 
+  const [nftObjects, setNftObjects] = useState ({})
+  const [loading, setLoading] = useState (true)
+  
   async function FetchApi () {
     setLoading(true);
     try {
@@ -178,7 +178,8 @@ const NewItems = () => {
                           data-bs-placement="top"
                           title="Creator: Monica Lucas"
                         >
-                          <img className="lazy" src={object.authorImage} alt="" />
+                          <img className="lazy" src={object.authorImage || nftImage} 
+                          alt="" />
                           <i className="fa fa-check"></i>
                         </Link>
                       </div>
@@ -212,15 +213,16 @@ const NewItems = () => {
                         </div>
                         
                           <Link to={`/item-details/${object.nftId}`} >
-                            <img src={object.nftImage} className="lazy nft__item_preview"  
-                            alt="" />
+                            <img src={object.nftImage || nftImage} 
+                            className="lazy nft__item_preview"  
+                            alt={object.nftImage} />
                           </Link>
                           </div>
                           <div className="nft__item_info">
                           <Link to={`/item-details/${object.nftId}`}  >
                             <h4>{object.title}</h4>
                           </Link>
-                          <div className="nft__item_price">{object.price}ETH</div>
+                          <div className="nft__item_price">{object.price} ETH</div>
                           <div className="nft__item_like"> 
                             <i className="fa fa-heart"></i>
                             <span>{object.likes}</span>
