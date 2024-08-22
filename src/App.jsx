@@ -19,7 +19,7 @@ function App() {
         <Route path="/author/:authorId" element={<Author />} />
         <Route path="/nft/:id" element={<ItemDetails />} /> 
         <Route path="/nft-image" element={<ItemDetails />} /> 
-        <Route path="/top-sellers/:topSellersId" element={<TopSellers />} /> 
+        <Route path="/top-sellers/:top-SellersId" element={<TopSellers />} />
       </Routes>
       <Footer />
     </Router>
