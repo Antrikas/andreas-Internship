@@ -1,9 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthorImage from "../../images/author_thumbnail.jpg";
 import nftImage from "../../images/nftImage.jpg";
+import axios from "axios";
+import useCountdownTimers from "./useCountdownTimers";
+
 
 const ExploreItems = () => {
+  const [nftObjects, setNftObjects] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore"
+        );
+        setNftObjects(response.data); // Assuming response.data is an array of NFTs
+      } catch (error) {
+        console.error("Error fetching NFT data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const countdownTimes = useCountdownTimers(nftObjects);
+
   return (
     <>
       <div>
@@ -14,9 +36,9 @@ const ExploreItems = () => {
           <option value="likes_high_to_low">Most liked</option>
         </select>
       </div>
-      {new Array(8).fill(0).map((_, index) => (
+      {nftObjects.map((nft) => ( // Correctly define 'nft' here
         <div
-          key={index}
+          key={nft.id}
           className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
           style={{ display: "block", backgroundSize: "cover" }}
         >
@@ -31,7 +53,12 @@ const ExploreItems = () => {
                 <i className="fa fa-check"></i>
               </Link>
             </div>
-            <div className="de_countdown">5h 30m 32s</div>
+            {/* Display the dynamic countdown */}
+            <div className="de_countdown">
+              {countdownTimes[nft.id]
+                ? `${countdownTimes[nft.id].hours}h ${countdownTimes[nft.id].minutes}m ${countdownTimes[nft.id].seconds}s`
+                : "Expired"}
+            </div>
 
             <div className="nft__item_wrap">
               <div className="nft__item_extra">
