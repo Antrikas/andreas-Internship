@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import AuthorImage from "../../images/author_thumbnail.jpg";
 import nftImage from "../../images/nftImage.jpg";
 import axios from "axios";
-import useCountdownTimers from "./useCountdownTimers";
+import countdownTimes from "../../components/home/NewItems";
+
 
 
 const ExploreItems = () => {
@@ -24,7 +25,7 @@ const ExploreItems = () => {
     fetchData();
   }, []);
 
-  const countdownTimes = useCountdownTimers(nftObjects);
+  
 
   return (
     <>
