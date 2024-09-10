@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import AuthorImage from "../../images/author_thumbnail.jpg";
 import nftImage from "../../images/nftImage.jpg";
 import axios from "axios";
+import Skeleton from "../UI/Skeleton"; // Assuming you're using a custom Skeleton component
 
 const ExploreItems = () => {
   const [nftObjects, setNftObjects] = useState([]);
-  const [countdownTimes, setCountdownTimes] = useState({}); // Countdown state
-  const [visibleItems, setVisibleItems] = useState(8);
+  const [countdownTimes, setCountdownTimes] = useState({});
+  const [visibleItems, setVisibleItems] = useState(8); // State to manage the number of visible items
+  const [loading, setLoading] = useState(true); // Loading state
 
   // Fetching NFT data
   useEffect(() => {
@@ -17,8 +19,10 @@ const ExploreItems = () => {
           "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore"
         );
         setNftObjects(response.data); // Assuming response.data is an array of NFTs
+        setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
         console.error("Error fetching NFT data:", error);
+        setLoading(false); // Ensure loading stops even if there's an error
       }
     };
 
@@ -56,6 +60,7 @@ const ExploreItems = () => {
     return { hours, minutes, seconds };
   };
 
+  // Load more function
   const loadMoreItems = () => {
     setVisibleItems((prevValue) => prevValue + 4); // Increase the number of visible items by 4
   };
@@ -71,73 +76,94 @@ const ExploreItems = () => {
         </select>
       </div>
 
-      {nftObjects.slice(0, visibleItems).map((nft) => (
-        <div
-          key={nft.id}
-          className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
-          style={{ display: "block", backgroundSize: "cover" }}
-        >
-          <div className="nft__item">
-            <div className="author_list_pp">
-              <Link to={`/author/${nft.authorId}`} data-bs-toggle="tooltip" data-bs-placement="top">
-                <img className="lazy" src={nft.authorImage || AuthorImage} alt="author" />
-                <i className="fa fa-check"></i>
-              </Link>
-            </div>
-
-            {/* Display the dynamic countdown */}
-            {countdownTimes[nft.id] > 0 ? (
-              <div className="de_countdown">
-                {calculateRemainingTime(countdownTimes[nft.id]).hours}h{" "}
-                {calculateRemainingTime(countdownTimes[nft.id]).minutes}m{" "}
-                {calculateRemainingTime(countdownTimes[nft.id]).seconds}s
-              </div>
-            ) : (
-              <div className="de_countdown">Expired</div>
-            )}
-
-            <div className="nft__item_wrap">
-              <div className="nft__item_extra">
-                <div className="nft__item_buttons">
-                  <button>Buy Now</button>
-                  <div className="nft__item_share">
-                    <h4>Share</h4>
-                    <a href="" target="_blank" rel="noreferrer">
-                      <i className="fa fa-facebook fa-lg"></i>
-                    </a>
-                    <a href="" target="_blank" rel="noreferrer">
-                      <i className="fa fa-twitter fa-lg"></i>
-                    </a>
-                    <a href="">
-                      <i className="fa fa-envelope fa-lg"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <Link to={`/item-details/${nft.nftId}`}>
-                <img src={nft.nftImage || nftImage} className="lazy nft__item_preview" alt={nft.title} />
-              </Link>
-            </div>
-
-            <div className="nft__item_info">
-              <Link to={`/item-details/${nft.nftId}`}>
-                <h4>{nft.title}</h4>
-              </Link>
-              <div className="nft__item_price">{nft.price} ETH</div>
-              <div className="nft__item_like">
-                <i className="fa fa-heart"></i>
-                <span>{nft.likes}</span>
+      {/* Skeleton loading logic */}
+      {loading ? (
+        [...Array(visibleItems)].map((_, index) => (
+          <div
+            key={index}
+            className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
+            style={{ display: "block", backgroundSize: "cover" }}
+          >
+            <div className="nft__item">
+              <Skeleton width="100%" height={200} />
+              <div className="nft__item_info">
+                <Skeleton width="80%" height={20} />
+                <Skeleton width="50%" height={20} />
               </div>
             </div>
           </div>
+        ))
+      ) : (
+        nftObjects.slice(0, visibleItems).map((nft) => (
+          <div
+            key={nft.id}
+            className="d-item col-lg-3 col-md-6 col-sm-6 col-xs-12"
+            style={{ display: "block", backgroundSize: "cover" }}
+          >
+            <div className="nft__item">
+              <div className="author_list_pp">
+                <Link to={`/author/${nft.authorId}`} data-bs-toggle="tooltip" data-bs-placement="top">
+                  <img className="lazy" src={nft.authorImage || AuthorImage} alt="author" />
+                  <i className="fa fa-check"></i>
+                </Link>
+              </div>
+
+              {/* Display the dynamic countdown */}
+              {countdownTimes[nft.id] > 0 ? (
+                <div className="de_countdown">
+                  {calculateRemainingTime(countdownTimes[nft.id]).hours}h{" "}
+                  {calculateRemainingTime(countdownTimes[nft.id]).minutes}m{" "}
+                  {calculateRemainingTime(countdownTimes[nft.id]).seconds}s
+                </div>
+              ) : (
+                <div className="de_countdown">Expired</div>
+              )}
+
+              <div className="nft__item_wrap">
+                <div className="nft__item_extra">
+                  <div className="nft__item_buttons">
+                    <button>Buy Now</button>
+                    <div className="nft__item_share">
+                      <h4>Share</h4>
+                      <a href="" target="_blank" rel="noreferrer">
+                        <i className="fa fa-facebook fa-lg"></i>
+                      </a>
+                      <a href="" target="_blank" rel="noreferrer">
+                        <i className="fa fa-twitter fa-lg"></i>
+                      </a>
+                      <a href="">
+                        <i className="fa fa-envelope fa-lg"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <Link to={`/item-details/${nft.nftId}`}>
+                  <img src={nft.nftImage || nftImage} className="lazy nft__item_preview" alt={nft.title} />
+                </Link>
+              </div>
+
+              <div className="nft__item_info">
+                <Link to={`/item-details/${nft.nftId}`}>
+                  <h4>{nft.title}</h4>
+                </Link>
+                <div className="nft__item_price">{nft.price} ETH</div>
+                <div className="nft__item_like">
+                  <i className="fa fa-heart"></i>
+                  <span>{nft.likes}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))
+      )}
+
+      {/* Load More Button */}
+      {!loading && visibleItems < nftObjects.length && (
+        <div className="col-md-12 text-center">
+          <button onClick={loadMoreItems} className="btn-main lead">
+            Load more
+          </button>
         </div>
-      ))}
- {visibleItems < nftObjects.length && (
-      <div className="col-md-12 text-center">
-      <button onClick={loadMoreItems} className="btn-main lead">
-        Load more
-      </button>
-      </div>
       )}
     </>
   );
