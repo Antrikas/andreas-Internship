@@ -10,14 +10,17 @@ const ExploreItems = () => {
   const [countdownTimes, setCountdownTimes] = useState({});
   const [visibleItems, setVisibleItems] = useState(8); // State to manage the number of visible items
   const [loading, setLoading] = useState(true); // Loading state
+  const [filter, setFilter] = useState("");
+
+  const apiUrl = `https://us-central1-nft-cloud-functions.cloudfunctions.net/explore${
+    filter ? `?filter=${filter}` : ""
+  }`;
 
   // Fetching NFT data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "https://us-central1-nft-cloud-functions.cloudfunctions.net/explore"
-        );
+        const response = await axios.get(apiUrl);
         setNftObjects(response.data); // Assuming response.data is an array of NFTs
         setLoading(false); // Set loading to false once data is fetched
       } catch (error) {
@@ -27,7 +30,7 @@ const ExploreItems = () => {
     };
 
     fetchData();
-  }, []);
+  }, [filter]);
 
   // Countdown logic
   useEffect(() => {
@@ -65,10 +68,15 @@ const ExploreItems = () => {
     setVisibleItems((prevValue) => prevValue + 4); // Increase the number of visible items by 4
   };
 
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value); // Set filter based on user selection
+    setVisibleItems(8); // Reset the visible items to the initial 8 after a filter change
+  };
+
   return (
     <>
       <div>
-        <select id="filter-items" defaultValue="">
+        <select id="filter-items" defaultValue="" onChange={handleFilterChange}> 
           <option value="">Default</option>
           <option value="price_low_to_high">Price, Low to High</option>
           <option value="price_high_to_low">Price, High to Low</option>
