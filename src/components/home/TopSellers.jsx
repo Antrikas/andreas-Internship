@@ -30,32 +30,32 @@ const TopSellers = () => {
 
 
   return (
-    <section id="section-popular" className="pb-5">
+    <section id="section-popular" className="pb-5" data-aos="fade-up">
       <div className="container">
         <div className="row">
-          <div className="col-lg-12">
-            <div className="text-center">
-              <h2>Top Sellers</h2>
-              <div className="small-border bg-color-2"></div>
-            </div>
+          <div className="col-lg-12 text-center">
+            <h2 data-aos="zoom-in">Top Sellers</h2>
+            <div className="small-border bg-color-2" data-aos="fade-right"></div>
           </div>
           <div className="col-md-12">
             <ol className="author_list">
-            {topSellers.map((item, index) => (
-                <li key={index}>
+              {topSellers.map((item, index) => (
+                <li key={index} data-aos="flip-left" data-aos-delay={`${index * 100}`}>
                   <div className="author_list_pp">
                     <Link to={`/author/${item.authorId}`}>
                       <img
                         className="lazy pp-author"
-                        src={item.authorImage|| AuthorImage}
+                        src={item.authorImage || AuthorImage}
                         alt=""
+                        data-aos="zoom-in"
                       />
-                      <i className="fa fa-check"></i>
                     </Link>
                   </div>
                   <div className="author_list_info">
-                  <Link to={`/author/${item.authorId}`}>{item.authorName}</Link>
-                    <span>{item.price} ETH</span>
+                    <Link to={`/author/${item.authorId}`} data-aos="fade-up">
+                      {item.authorName}
+                    </Link>
+                    <span data-aos="fade-left">{item.price} ETH</span>
                   </div>
                 </li>
               ))}
