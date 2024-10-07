@@ -39,7 +39,7 @@ const ItemDetails = () => {
 
   if (loading) {
     return (
-      <div className="container">
+      <div className="container" data-aos="fade-in">
         <div className="row">
           <div className="col-md-6 text-center">
             <Skeleton width="300px" height="300px" borderRadius="10px" />
@@ -69,25 +69,31 @@ const ItemDetails = () => {
       </div>
     );
   }
+
   return (
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">
         <div id="top"></div>
-        <section aria-label="section" className="mt90 sm-mt-0">
+        
+        {/* Container for item details with fade-in animation */}
+        <section aria-label="section" className="mt90 sm-mt-0" data-aos="fade-in" data-aos-duration="1200">
           <div className="container">
             <div className="row">
-              <div className="col-md-6 text-center">
+              
+              {/* Image section with zoom-in animation */}
+              <div className="col-md-6 text-center" data-aos="zoom-in" data-aos-duration="1000">
                 <img
                   src={nftData.nftImage}
                   className="img-fluid img-rounded mb-sm-30 nft-image"
                   alt=""
                 />
               </div>
-              <div className="col-md-6">
+              
+              <div className="col-md-6" data-aos="fade-left" data-aos-duration="1200">
                 <div className="item_info">
                   <h2>{nftData.title}</h2>
 
-                  <div className="item_info_counts">
+                  <div className="item_info_counts" data-aos="fade-up" data-aos-delay="200">
                     <div className="item_info_views">
                       <i className="fa fa-eye"></i>
                       {nftData.views}
@@ -97,8 +103,10 @@ const ItemDetails = () => {
                       {nftData.likes}
                     </div>
                   </div>
-                  <p>{nftData.description}</p>
-                  <div className="d-flex flex-row">
+                  <p data-aos="fade-up" data-aos-delay="300">{nftData.description}</p>
+                  
+                  {/* Owner information with staggered fade-up effect */}
+                  <div className="d-flex flex-row mt-4" data-aos="fade-up" data-aos-delay="400">
                     <div className="mr40">
                       <h6>Owner</h6>
                       <div className="item_author">
@@ -114,7 +122,9 @@ const ItemDetails = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="de_tab tab_simple">
+
+                  {/* Creator information */}
+                  <div className="de_tab tab_simple" data-aos="fade-up" data-aos-delay="500">
                     <div className="de_tab_content">
                       <h6>Creator</h6>
                       <div className="item_author">
@@ -130,8 +140,10 @@ const ItemDetails = () => {
                       </div>
                     </div>
                     <div className="spacer-40"></div>
+                    
+                    {/* Price section with fade-up effect */}
                     <h6>Price</h6>
-                    <div className="nft-item-price">
+                    <div className="nft-item-price" data-aos="fade-up" data-aos-delay="600">
                       <img src={EthImage} alt="" />
                       <span>{nftData.price}</span>
                     </div>
