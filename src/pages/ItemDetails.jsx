@@ -2,38 +2,73 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import EthImage from "../images/ethereum.svg";
 import { Link } from "react-router-dom";
-import AuthorImage from "../images/author_thumbnail.jpg";
-import nftImage from "../images/nftImage.jpg";
+import Skeleton from "../components/UI/Skeleton";
+
 
 const ItemDetails = () => {
   const { nftId } = useParams();
   const [nftData, setNftData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
+
     const fetchNftData = async () => {
       try {
-        console.log(nftId)
-        const response = await fetch(`https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${nftId}`);
+        const response = await fetch(
+          `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${nftId}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const data = await response.json();
         setNftData(data);
       } catch (error) {
         console.error("Error fetching NFT data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchNftData();
+    if (nftId) {
+      fetchNftData();
+    }
   }, [nftId]);
 
-  useEffect(() => {
-    console.log(nftData);
-    }, [nftData])
-
-  if (!nftData) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-md-6 text-center">
+            <Skeleton width="300px" height="300px" borderRadius="10px" />
+          </div>
+          <div className="col-md-6">
+            <Skeleton width="200px" height="40px" style={{ marginBottom: "20px" }} />
+            <Skeleton width="100%" height="20px" />
+            <Skeleton width="100%" height="20px" />
+            <Skeleton width="100%" height="20px" />
+            <div className="d-flex flex-row mt-4">
+              <div className="mr40">
+                <h6>Owner</h6>
+                <Skeleton width="50px" height="50px" borderRadius="50%" />
+                <Skeleton width="100px" height="20px" style={{ marginTop: "10px" }} />
+              </div>
+              <div className="ml40">
+                <h6>Creator</h6>
+                <Skeleton width="50px" height="50px" borderRadius="50%" />
+                <Skeleton width="100px" height="20px" style={{ marginTop: "10px" }} />
+              </div>
+            </div>
+            <div className="spacer-40"></div>
+            <h6>Price</h6>
+            <Skeleton width="100px" height="30px" />
+          </div>
+        </div>
+      </div>
+    );
   }
-
   return (
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">

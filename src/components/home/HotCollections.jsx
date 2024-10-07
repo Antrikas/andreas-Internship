@@ -141,12 +141,12 @@ const HotCollections = () => {
               <div className="col-lg-12 col-md-12 col-sm-10 col-xs-12" key={object.id}>
                 <div className="nft_coll">
                   <div className="nft_wrap">
-                    <Link to="/item-details">
+                    <Link to={`/item-details/${object.nftId}`}>
                       <img src={object.nftImage} className="lazy img-fluid h-full" alt="" />
                     </Link>
                   </div>
                   <div className="nft_coll_pp">
-                    <Link to="/author">
+                    <Link to={`/author/${object.authorId}`}>
                       <img className="lazy pp-coll" src={object.authorImage} alt="" />
                     </Link>
                     <i className="fa fa-check"></i>
