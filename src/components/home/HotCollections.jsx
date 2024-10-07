@@ -47,7 +47,6 @@ const HotCollections = () => {
   };
 
   const [nftObjects, setNftObjects] = useState ({})
-
   const [loading, setLoading] = useState (true)
 
   function SampleNextArrow(props) {
